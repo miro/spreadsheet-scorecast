@@ -4,6 +4,9 @@
   	"private": true,
   	"dependencies": {
     	"mongodb": ">= 0.9.6-7",
-    	"monk": ">= 0.7.0"
+    	"monk": ">= 0.7.0",
+    	"google-spreadsheets": "latest",
+    	"request": "latest",
+    	"lodash": "latest"
   }
 }

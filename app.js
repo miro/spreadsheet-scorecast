@@ -3,7 +3,6 @@ var request = require('request');
 var _ = require('lodash');
 
 // MongoDB stuff
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/fhl-groupstage');
 
