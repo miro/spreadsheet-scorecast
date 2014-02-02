@@ -22,7 +22,6 @@ var scorecast = {
     groupQueue: [],
 
     processWorksheet: function(worksheet, spreadsheetNum) {
-        console.log('prosessing ' + spreadsheetNum + ' / ' + this.spreadsheetNumToGroup(spreadsheetNum));
         // Create match objects from scraped content
         this.getValidMatches(worksheet, spreadsheetNum);
 
@@ -61,7 +60,6 @@ var scorecast = {
         var self = this;
 
         if (!this.dbMatches) {
-            console.log("rebound, DB fetch not ready, groupname " + groupName);
             if (groupName) this.groupQueue.push(groupName);
             return;
         }
@@ -70,23 +68,22 @@ var scorecast = {
         groupName = groupName ? groupName : this.groupQueue.shift();
 
         if (!this.scrapedMatches[groupName]) {
-            console.log("rebound " + groupName);
             if (groupName) this.groupQueue.push(groupName);
             return; 
         }
         
         // If we get here, we have DB results and scraped matches from this group
-        console.log('----------------------------------');
-        console.log(groupName + ' passed, continue.');
-        this.groupsDone += 1;
+        console.log('----------');
+        console.log('Group ' + groupName + ' has all data ready, start processing');
+        
 
         // Filter new matches
         var newMatches = _.filter(self.scrapedMatches[groupName], function(match) {
-            var newMatch = true;
+            var isNewMatch = true;
             _.each(self.dbMatches, function(dbMatch) {
-                newmatch = false; // Found old match with same id - this is unwanted
+                isNewMatch = false; // Found old match with same id - this is unwanted
             });
-            return newMatch; // If we get here, this must be a new match
+            return isNewMatch; // If we get here, this must be a new match
         });
 
         // Add timestamp to new matches
@@ -108,9 +105,22 @@ var scorecast = {
                     console.log("Error - saving new matches to DB didn't work out");
                 }
                 else {
-                    console.log("New matches saved to the DB.");
+                    console.log(newMatches.length + " new matches saved to the DB.");
+                    self.exitIfPossible();
                 }
             });
+        }
+        else {
+            console.log("No new matches for Group " + groupName);
+            self.exitIfPossible();
+        }
+    },
+
+    exitIfPossible: function() {
+        this.groupsDone += 1;
+        if (this.groupsDone >= 4) {
+            console.log('*** 4 groups processed - time to exit');
+            process.exit(0);
         }
     },
 
@@ -210,13 +220,13 @@ Spreadsheets(
     },
 
     function(err, spreadsheet) {
-        console.log("4 fetch start");
+        console.log("Worksheet 4 fetch start");
         spreadsheet.worksheets[4].cells({
             range: "R4C2:R16C13"
         }, 
 
         function(err, result) {
-            console.log("4 fetched");
+            console.log("Worksheet 4 fetched");
             scorecast.processWorksheet(result.cells, 4);
         });
     }
@@ -228,13 +238,13 @@ Spreadsheets(
     },
 
     function(err, spreadsheet) {
-        console.log("3 fetch start");
+        console.log("Worksheet 3 fetch start");
         spreadsheet.worksheets[3].cells({
             range: "R4C2:R16C13"
         }, 
 
         function(err, result) {
-            console.log("3 fetched");
+            console.log("Worksheet 3 fetched");
             scorecast.processWorksheet(result.cells, 3);
         });
     }
@@ -246,13 +256,13 @@ Spreadsheets(
     },
 
     function(err, spreadsheet) {
-        console.log("2 fetch start");
+        console.log("Worksheet 2 fetch start");
         spreadsheet.worksheets[2].cells({
             range: "R4C2:R16C13"
         }, 
 
         function(err, result) {
-            console.log("2 fetched");
+            console.log("Worksheet 2 fetched");
             scorecast.processWorksheet(result.cells, 2);
         });
     }
@@ -265,13 +275,13 @@ Spreadsheets(
     },
 
     function(err, spreadsheet) {
-        console.log("5 fetch start");
+        console.log("Worksheet 5 fetch start");
         spreadsheet.worksheets[5].cells({
             range: "R4C2:R16C13"
         }, 
 
         function(err, result) {
-            console.log("5 fetched");
+            console.log("Worksheet 5 fetched");
             scorecast.processWorksheet(result.cells, 5);
         });
     }
