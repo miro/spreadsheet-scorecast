@@ -101,7 +101,7 @@ var scorecast = {
                 newMatch.homePlayer + ' (' + newMatch.homeTeam + ') vs ' + 
                 newMatch.awayPlayer + ' (' + newMatch.awayTeam + ')</p> ';
             content = content + '<h1>' + newMatch.homeGoals + ' - ' + newMatch.awayGoals + '</h1>';
-            var content = newMatch.overTime ? content + ' OT' : content;
+            var content = newMatch.overtime ? content + ' OT' : content;
 
             // Send them to Flowdock
             request({
