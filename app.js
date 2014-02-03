@@ -18,6 +18,8 @@ var scorecast = {
     scrapedMatches: {},
     dbMatches: null,
     groupsDone: 0,
+    newMatchesCount: 0,
+    newMatchesAnnounced: 0,
     groupQueue: [],
 
     processWorksheet: function(worksheet, spreadsheetNum) {
@@ -85,6 +87,9 @@ var scorecast = {
             return isNewMatch; // If we get here, this must be a new match
         });
 
+        // Update new match count 
+        this.newMatchesCount += newMatches.length;
+
         // Add timestamp to new matches
         _.each(newMatches, function(newMatch) {
             newMatch["dateCreated"] = new Date();
@@ -105,25 +110,27 @@ var scorecast = {
                 }
                 else {
                     console.log(newMatches.length + " new matches saved to the DB.");
+                    self.groupsDone += 1;
                     self.exitIfPossible();
                 }
             });
         }
         else {
             console.log("No new matches for Group " + groupName);
+            self.groupsDone += 1;
             self.exitIfPossible();
         }
     },
 
     exitIfPossible: function() {
-        this.groupsDone += 1;
-        if (this.groupsDone >= 4) {
-            console.log('*** 4 groups processed - time to exit');
+        if (this.groupsDone >= 4 && this.newMatchesCount === this.newMatchesAnnounced) {
+            console.log('*** 4 groups processed and all new matches announced - time to exit');
             process.exit(0);
         }
     },
 
     announceNewMatches: function(newMatches) {
+        var self = this;
         _.each(newMatches, function(newMatch) {
 
             // Form the HTML-formatted content information
@@ -147,6 +154,8 @@ var scorecast = {
                 }
             }, function(error, response, body) {
                 console.log(body); // If this is empty, alles gut
+                self.newMatchesAnnounced += 1;
+                self.exitIfPossible();
             });
         });
         
