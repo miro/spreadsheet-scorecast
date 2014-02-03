@@ -12,6 +12,7 @@ var Spreadsheets = require("google-spreadsheets");
 // Our own config file
 var scorecastConfig = require('./scorecast-config');
 
+console.log("Scorecast starting @ " + Date());
 
 var scorecast = {
 
