@@ -76,13 +76,15 @@ var scorecast = {
         // If we get here, we have DB results and scraped matches from this group
         console.log('----------');
         console.log('Group ' + groupName + ' has all data ready, start processing');
-        
 
         // Filter new matches
         var newMatches = _.filter(self.scrapedMatches[groupName], function(match) {
             var isNewMatch = true;
             _.each(self.dbMatches, function(dbMatch) {
-                isNewMatch = false; // Found old match with same id - this is unwanted
+                if (dbMatch.id === match.id) {
+                    // Found old match with same id - this is unwanted
+                    isNewMatch = false;
+                }
             });
             return isNewMatch; // If we get here, this must be a new match
         });
