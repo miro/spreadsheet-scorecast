@@ -141,8 +141,10 @@ var scorecast = {
             var content = '<p>' + 
                 newMatch.homePlayer + ' (' + newMatch.homeTeam + ') vs ' + 
                 newMatch.awayPlayer + ' (' + newMatch.awayTeam + ')</p> ';
-            content = content + '<h1>' + newMatch.homeGoals + ' - ' + newMatch.awayGoals + '</h1>';
-            var content = newMatch.overtime ? content + ' OT' : content;
+            content += '<h1>' + newMatch.homeGoals + ' - ' + newMatch.awayGoals;
+            content += newMatch.overtime ? ' OT' : '';
+            content += '</h1>';
+            content += '<p>See standings from the <a href="http://bit.ly/LQDiaj">Spreadsheet</a></p>';
 
             // Send them to Flowdock
             request({
