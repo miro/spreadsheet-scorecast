@@ -9,3 +9,8 @@ exports.flowdockUrl = 'https://api.flowdock.com/v1/messages/team_inbox/<flowApiK
 // ### Sender Email 
 // this shows on Flowdock inbox as the sender
 exports.senderEmail = 'john@doe.com';
+
+
+// ### Link to the Spreadsheet
+// This is shown on the Flowdoge messages
+exports.spreadsheetLink = 'http://bit.ly/fcl-2015';
