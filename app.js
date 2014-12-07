@@ -10,7 +10,7 @@ var db = monk('localhost:27017/fhl-groupstage');
 var Spreadsheets = require("google-spreadsheets");
 
 // Our own config file
-var scorecastConfig = require('./scorecast-config');
+var scorecastConfig = require('./scorecast-config'); // NOTE: if you run this via cron, this need sto be the exact path to the config file
 
 console.log("Scorecast starting @ " + Date());
 
