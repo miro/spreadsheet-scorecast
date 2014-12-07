@@ -148,7 +148,7 @@ var scorecast = {
 
             // Send them to Flowdock
             request({
-                uri: scorecastConfig.flowdockUri,
+                uri: scorecastConfig.flowdockUrl,
                 method: "POST",
                 json: {
                     "source": "FHL Scorecast",
