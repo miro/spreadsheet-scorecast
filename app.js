@@ -151,7 +151,7 @@ var scorecast = {
                 uri: scorecastConfig.flowdockUrl,
                 method: "POST",
                 json: {
-                    "source": "FHL Scorecast",
+                    "source": scorecastConfig.senderTitle,
                     "from_address": scorecastConfig.senderEmail, 
                     "subject": title,
                     "content": content,
