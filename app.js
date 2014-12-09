@@ -4,15 +4,15 @@ var _       = require('lodash');
 var monk    = require('monk');
 
 // Our own config file
-var scorecastConfig = require('./scorecast-config'); // TODO __dirname
+var config = require('./scorecast-config'); // TODO __dirname
 
 // Connect to database
 var db = monk(
-    scorecastConfig.database.address + 
+    config.database.address + 
     ':' + 
-    scorecastConfig.database.port + 
+    config.database.port + 
     '/' + 
-    scorecastConfig.database.name
+    config.database.name
 ); 
 
 // Google Spreadsheet crawler
@@ -134,7 +134,7 @@ var scorecast = {
     },
 
     exitIfPossible: function() {
-        if (this.groupsDone >= 4 && this.newMatchesCount === this.newMatchesAnnounced) {
+        if (this.groupsDone >= 4 && this.newMatchesCount === this.newMatchesAnnounced) { // TODO
             console.log('*** 4 groups processed and all new matches announced - time to exit');
             process.exit(0);
         }
@@ -152,15 +152,15 @@ var scorecast = {
             content += '<h1>' + newMatch.homeGoals + ' - ' + newMatch.awayGoals;
             content += newMatch.overtime ? ' OT' : '';
             content += '</h1>';
-            content += '<p>See standings from the <a href="' + scorecastConfig.spreadsheetLink + '">Spreadsheet</a></p>';
+            content += '<p>See standings from the <a href="' + config.spreadsheetLink + '">Spreadsheet</a></p>';
 
             // Send them to Flowdock
             request({
-                uri: scorecastConfig.flowdockUrl,
+                uri: config.flowdockUrl,
                 method: "POST",
                 json: {
-                    "source": scorecastConfig.senderTitle,
-                    "from_address": scorecastConfig.senderEmail, 
+                    "source": config.senderTitle,
+                    "from_address": config.senderEmail, 
                     "subject": title,
                     "content": content,
                     "tags":  ['groupstage', 'group-' + newMatch.group, 'game' + newMatch.id]
@@ -235,9 +235,10 @@ var scorecast = {
 
 // Crawl the data from each group standing sheet
 // TODO: optimize this to use only one request...
+// This is the "main function"
 Spreadsheets(
     {
-        key: scorecastConfig.spreadsheetKey
+        key: config.spreadsheetKey
     },
 
     function(err, spreadsheet) {
@@ -255,7 +256,7 @@ Spreadsheets(
 
 Spreadsheets(
     {
-        key: scorecastConfig.spreadsheetKey
+        key: config.spreadsheetKey
     },
 
     function(err, spreadsheet) {
@@ -273,7 +274,7 @@ Spreadsheets(
 
 Spreadsheets(
     {
-        key: scorecastConfig.spreadsheetKey
+        key: config.spreadsheetKey
     },
 
     function(err, spreadsheet) {
@@ -292,7 +293,7 @@ Spreadsheets(
 
 Spreadsheets(
     {
-        key: scorecastConfig.spreadsheetKey
+        key: config.spreadsheetKey
     },
 
     function(err, spreadsheet) {
