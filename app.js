@@ -202,13 +202,13 @@ var scorecast = {
             // Send them to Flowdock
             request({
                 uri: config.flowdockUrl,
-                method: "POST",
+                method: 'POST',
                 json: {
-                    "source": config.senderTitle,
-                    "from_address": config.senderEmail, 
-                    "subject": title,
-                    "content": content,
-                    "tags":  ['groupstage', 'group-' + newMatch.group, 'game' + newMatch.id]
+                    'source': config.senderTitle,
+                    'from_address': config.senderEmail, 
+                    'subject': title,
+                    'content': content,
+                    'tags':  [newMatch.type.split(' ').join(''), newMatch.group.split(' ').join('-'), 'game' + newMatch.id]
                 }
             }, function(error, response, body) {
                 console.log(body); // If this is empty, alles gut
