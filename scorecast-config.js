@@ -137,24 +137,22 @@ exports.worksheets = [
         awayPointsCol: groupStageConfig.awayPointsCol,
 
         sheetGroupType: groupStageConfig.sheetGroupType
-    },
-
-    {
-        sheetGroupName: 'Playoffs',
-        sheetIndex: 6,
-        dataCols: matchDataCols,
-
-        leftBorder: 0,
-        rightBorder: 11,
-        topBorder: 3,
-        bottomBorder: 33,
-
-        homePointsCol: 10,
-        awayPointsCol: 11,
-
-        sheetGroupType: 'playoffs'
     }
+
+    // {
+        // TODO: PLAYOFFS CONFIG
+    //     sheetGroupName: 'Playoffs',
+    //     sheetIndex: 6,
+    //     dataCols: matchDataCols,
+
+    //     leftBorder: 0,
+    //     rightBorder: 11,
+    //     topBorder: 3,
+    //     bottomBorder: 33,
+
+    //     homePointsCol: 10,
+    //     awayPointsCol: 11,
+
+    //     sheetGroupType: 'playoffs'
+    // }
 ];
-
-
-};
