@@ -44,15 +44,55 @@ var scorecast = {
         }
     },
 
-    getValidMatches: function(rows, spreadsheetNum) {
+
+    // This function is for processing the WHOLE spreadsheet. 
+    // Parameter spreadsheet is the object rqeuested via the Spreadsheet module
+    processSpreadsheet: function(spreadsheet) {
+
+        // Start going through the sheets
+        _.each(config.worksheets, function(sheetCfg) {
+            console.log('Worksheet (' + sheetCfg.sheetIndex + ' / ' + sheetCfg.sheetGroupName + ' processing started');
+
+
+            // Fetch cells from this specific worksheet
+            spreadsheet.worksheets[sheetCfg.sheetIndex].cells(
+                { range: 
+                    'R' + sheetCfg.leftBorder +
+                    'C' + sheetCfg.topBorder +
+                    ':R' + sheetCfg.rightBorder +
+                    'C' + sheetCfg.bottomBorder
+                }, 
+
+                function success(error, result) {
+                    if (error) {
+                        console.log('## Error while fetching cells from the sheet' + sheetCfg.sheetIndex);
+                        console.log('Processing of this sheet is aborted');
+                    }
+                    else {
+                        scorecast.processCells(result.cells, sheetCfg);
+                    }
+                }
+            );
+        });
+    },
+
+
+    // This function is for processing individual worksheet
+    processCells: function(cells, sheetCfg) {
+        // Create match objects from scraped content
+        this.getValidMatches(cells, sheetCfg);
+        
+    },
+
+    getValidMatches: function(rows, sheetCfg) {
         var finishedMatches = _.filter(rows, function(row) {
             var homePoints = _.find(row, function(cell) {
-                return cell.col === '12'; // TODO get from const
+                return cell.col === sheetCfg.homePointsCol;
             });
             homePoints = parseInt(homePoints.value, 10);
 
             var awayPoints = _.find(row, function(cell) {
-                return cell.col === '13'; // TODO get from const
+                return cell.col === sheetCfg.awayPointsCol;
             });
             awayPoints = parseInt(awayPoints.value, 10);
 
@@ -60,13 +100,14 @@ var scorecast = {
         });
 
         // Add this to our scraped matches object 
-        this.scrapedMatches[this.spreadsheetNumToGroup(spreadsheetNum)] = this.createMatchObjects(finishedMatches, spreadsheetNum);
+        this.scrapedMatches[sheetCfg.sheetGroupName] = this.createMatchObjects(finishedMatches, sheetCfg);
 
         // Find out the new matches from these
-        this.getNewMatches(this.spreadsheetNumToGroup(spreadsheetNum));
+        this.getNewMatches(sheetCfg.sheetGroupName);
     },
 
     getNewMatches: function(groupName) {
+        // Right now I have no idea what this queue stuff does... Seems to work! :--D
         var self = this;
 
         if (!this.dbMatches) {
@@ -186,127 +227,68 @@ var scorecast = {
     },
 
 
-    createMatchObjects: function(finishedMatchesRows, spreadsheetNum) {
-        this.matches = new Array;
+    createMatchObjects: function(finishedMatchesRows, sheetCfg) {
+        this.matches = [];
 
         _.forEach(finishedMatchesRows, function(row) {
             var tempMatch = {
-                id: row[2].value,
-                date: row[3].value,
-                group: this.spreadsheetNumToGroup(spreadsheetNum),
+                group: sheetCfg.sheetGroupName,
+                type: sheetCfg.sheetGroupType,
+
+                id: row[sheetCfg.dataCols.id],
+                date: row[sheetCfg.dataCols.date],
                 
-                homeTeam: row[4].value,
-                homePlayer: row[5].value,
-                homeGoals: row[6].value,
-                // 7 = row delimiter
-                awayGoals: row[8].value,
-                awayPlayer: row[9].value,
-                awayTeam: row[10].value,
+                
+                homeTeam: row[sheetCfg.dataCols.homeTeam],
+                homePlayer: row[sheetCfg.dataCols.homePlayer],
+                homeGoals: row[sheetCfg.dataCols.homeGoals],
 
-                overtime: !!row[11] && !!row[11].value,
+                awayGoals: row[sheetCfg.dataCols.awayGoals],
+                awayPlayer: row[sheetCfg.dataCols.awayPlayer],
+                awayTeam: row[sheetCfg.dataCols.1awayTeam],
 
-                homePoints: row[12].value,
-                awayPoints: row[13].value
+                overtime: !!row[sheetCfg.dataCols.overtime] && !!row[sheetCfg.dataCols.overtime].value,
+
+                homePoints: row[sheetCfg.dataCols.homePoints],
+                awayPoints: row[sheetCfg.dataCols.awayPoints]
             };
 
             this.matches.push(tempMatch);
         }, this);
 
         return this.matches;
-    },
-
-    spreadsheetNumToGroup: function(worksheetNum) {
-        switch(String(worksheetNum)) {
-            case '2':
-                return 'a';
-            case '3':
-                return 'b';
-            case '4':
-                return 'c';
-            case '5':
-                return 'd';
-            default:
-                console.log('ERROR - creating group code from worksheet number failed');
-                return null;
-        }
     }
 };
 
 
-// Crawl the data from each group standing sheet
-// TODO: optimize this to use only one request...
-// This is the "main function"
-Spreadsheets(
-    {
-        key: config.spreadsheetKey
-    },
-
-    function(err, spreadsheet) {
-        console.log("Worksheet 4 fetch start");
-        spreadsheet.worksheets[4].cells({
-            range: "R4C2:R16C13"
-        }, 
-
-        function(err, result) {
-            console.log("Worksheet 4 fetched");
-            scorecast.processWorksheet(result.cells, 4);
-        });
-    }
-);
-
-Spreadsheets(
-    {
-        key: config.spreadsheetKey
-    },
-
-    function(err, spreadsheet) {
-        console.log("Worksheet 3 fetch start");
-        spreadsheet.worksheets[3].cells({
-            range: "R4C2:R16C13"
-        }, 
-
-        function(err, result) {
-            console.log("Worksheet 3 fetched");
-            scorecast.processWorksheet(result.cells, 3);
-        });
-    }
-);
-
-Spreadsheets(
-    {
-        key: config.spreadsheetKey
-    },
-
-    function(err, spreadsheet) {
-        console.log("Worksheet 2 fetch start");
-        spreadsheet.worksheets[2].cells({
-            range: "R4C2:R16C13"
-        }, 
-
-        function(err, result) {
-            console.log("Worksheet 2 fetched");
-            scorecast.processWorksheet(result.cells, 2);
-        });
-    }
-);
 
 
-Spreadsheets(
-    {
-        key: config.spreadsheetKey
-    },
+// ### Start cracking up
 
-    function(err, spreadsheet) {
-        console.log("Worksheet 5 fetch start");
-        spreadsheet.worksheets[5].cells({
-            range: "R4C2:R16C13"
-        }, 
+function main() {
+    scorecast.initializeDatabase();
 
-        function(err, result) {
-            console.log("Worksheet 5 fetched");
-            scorecast.processWorksheet(result.cells, 5);
-        });
-    }
-);
+    // Fetch the sheet
+    Spreadsheets(
+        { key: config.spreadsheetShareUrl },
+
+        function fetchReady(err, spreadsheet) {
+
+            if (err) {
+                console.log('## Error occurred while fetching the spreadsheet, aborting');
+                console.log(err);
+            }
+            else {
+                // Start processing the sheet
+                scorecast.processSpreadsheet(spreadsheet);
+            }
+        }
+    );
+
+};
+
+main();
+
+
 
 
