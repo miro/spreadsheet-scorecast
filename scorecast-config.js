@@ -13,4 +13,29 @@ exports.senderTitle = 'Futurice Scorecast';
 
 // ### Link to the Spreadsheet
 // This is shown on the Flowdoge messages
-exports.spreadsheetLink = 'http://bit.ly/fcl-2015';
+exports.spreadsheetLink = '';
+
+
+// ### Config for each worksheet that will be scraped for matches
+// From each sheet a "rectangle" of cells will be fetched. You have to provide the 
+// limiting columns & rows of this rectangle. The borders are inclusive. 
+//
+// All the indexing starts from 0, so first sheet/row/column's index is 0, NOT 1
+exports.worksheets = [
+
+    // {
+    //  sheetIndex: order number of this worksheet
+    //
+    //  leftBorder: the leftmost column on the content square
+    //  rightBorder: the right-most column on the content square
+    //  topBorder: the top row for the content square
+    //  bottomBorder: the bottom row for the content square
+    //  
+    //  homePointsCol: index of the column for home team's points on the content square. Indexing is the same as on the full spreadsheet
+    //  awayPointsCol: -||-
+    // }
+];
+
+
+};
+
