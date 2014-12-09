@@ -1,16 +1,24 @@
 // "General" modules
 var request = require('request');
-var _ = require('lodash');
+var _       = require('lodash');
+var monk    = require('monk');
 
-// MongoDB stuff
-var monk = require('monk');
-var db = monk('localhost:27017/fhl-groupstage');
+// Our own config file
+var scorecastConfig = require('./scorecast-config'); // TODO __dirname
+
+// Connect to database
+var db = monk(
+    scorecastConfig.database.address + 
+    ':' + 
+    scorecastConfig.database.port + 
+    '/' + 
+    scorecastConfig.database.name
+); 
 
 // Google Spreadsheet crawler
 var Spreadsheets = require("google-spreadsheets");
 
-// Our own config file
-var scorecastConfig = require('./scorecast-config'); // NOTE: if you run this via cron, this need sto be the exact path to the config file
+
 
 console.log("Scorecast starting @ " + Date());
 

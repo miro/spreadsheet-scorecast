@@ -15,6 +15,12 @@ exports.senderTitle = 'Futurice Scorecast';
 // This is shown on the Flowdoge messages
 exports.spreadsheetLink = '';
 
+// ### MongoDB config
+exports.database = {
+    address: 'localhost',
+    name: 'scorecast',
+    port: 27017
+};
 
 // ### Config for each worksheet that will be scraped for matches
 // From each sheet a "rectangle" of cells will be fetched. You have to provide the 
