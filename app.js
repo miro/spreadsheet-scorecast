@@ -31,11 +31,9 @@ var scorecast = {
     newMatchesAnnounced: 0,
     groupQueue: [],
 
-    processWorksheet: function(worksheet, spreadsheetNum) {
-        // Create match objects from scraped content
-        this.getValidMatches(worksheet, spreadsheetNum);
-
-        // Start query that gets saved matches from the DB
+    // Loads existing matches from the DB or inits the DB
+    initializeDatabase: function initializeDatabase() {
+        // Fetch DB data or init the DB
         if (!this.dbMatches) {
             this.getMatchesFromDB();
         }
