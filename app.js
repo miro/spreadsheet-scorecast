@@ -2,7 +2,7 @@
 var request         = require('request');
 var _               = require('lodash');
 var monk            = require('monk');
-var Spreadsheets    = require("google-spreadsheets"); // Google Spreadsheet crawler
+var Spreadsheets    = require('google-spreadsheets'); // Google Spreadsheet crawler
 
 
 // Our own config file
@@ -48,8 +48,8 @@ var scorecast = {
     processSpreadsheet: function(spreadsheet) {
 
         // Start going through the sheets
-        _.each(config.worksheets, function(sheetCfg) {
-            console.log('Worksheet (' + sheetCfg.sheetIndex + ' / ' + sheetCfg.sheetGroupName + ' processing started');
+        _.each(config.worksheets, function processSheet(sheetCfg) {
+            console.log('Worksheet ' + sheetCfg.sheetIndex + ' / ' + sheetCfg.sheetGroupName + ' processing started');
 
             var cellRange = 
                 'R' + sheetCfg.topBorder +
@@ -63,8 +63,9 @@ var scorecast = {
 
                 function success(error, result) {
                     if (error) {
-                        console.log('## Error while fetching cells from the sheet' + sheetCfg.sheetIndex);
+                        console.log('## Error while fetching cells from the sheet ' + sheetCfg.sheetIndex);
                         console.log('Processing of this sheet is aborted');
+                        console.log(error);
                     }
                     else {
                         scorecast.processCells(result.cells, sheetCfg);
@@ -275,6 +276,7 @@ function main() {
             }
             else {
                 // Start processing the sheet
+                console.log('Fetching the Spreadsheet finished');
                 scorecast.processSpreadsheet(spreadsheet);
             }
         }
