@@ -210,13 +210,20 @@ var scorecast = {
         
     },
 
-    getMatchesFromDB: function() {
+    getMatchesFromDB: function(callback) {
         var self = this;
         var collection = db.get('matches');
         var matchesInDB = collection.find({}, {id: 1, _id: 0},
-            function (err, cursor) {
-                self.dbMatches = cursor;
-                self.getNewMatches();
+            function (error, cursor) {
+                if (error) {
+                    console.log('### Error while fetching matches from the database, aborting');
+                    console.log(error);
+                    process.exit(1);
+                }
+                else {
+                    self.dbMatches = cursor;
+                    self.getNewMatches();
+                }
             }
         );
     },
