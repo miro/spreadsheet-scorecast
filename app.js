@@ -6,7 +6,7 @@ var Spreadsheets    = require("google-spreadsheets"); // Google Spreadsheet craw
 
 
 // Our own config file
-var config = require('./scorecast-config'); // TODO __dirname
+var config = require(__dirname + '/scorecast-config.js'); 
 
 // Connect to database
 var db = monk(
