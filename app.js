@@ -1,7 +1,9 @@
-// "General" modules
-var request = require('request');
-var _       = require('lodash');
-var monk    = require('monk');
+
+var request         = require('request');
+var _               = require('lodash');
+var monk            = require('monk');
+var Spreadsheets    = require("google-spreadsheets"); // Google Spreadsheet crawler
+
 
 // Our own config file
 var config = require('./scorecast-config'); // TODO __dirname
@@ -15,8 +17,6 @@ var db = monk(
     config.database.name
 ); 
 
-// Google Spreadsheet crawler
-var Spreadsheets = require("google-spreadsheets");
 
 
 
