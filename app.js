@@ -180,15 +180,24 @@ var scorecast = {
         var self = this;
         _.each(newMatches, function(newMatch) {
 
-            // Form the HTML-formatted content information
-            var title = 'Group ' + newMatch.group.charAt(0).toUpperCase() + ' - Match ' + newMatch.id;
-            var content = '<p>' + 
-                newMatch.homePlayer + ' (' + newMatch.homeTeam + ') vs ' + 
-                newMatch.awayPlayer + ' (' + newMatch.awayTeam + ')</p> ';
-            content += '<h1>' + newMatch.homeGoals + ' - ' + newMatch.awayGoals;
+            // Form the HTML-formatted content for Flowdoge
+            var title = 
+                'Match ' + newMatch.id + ' - ' +
+                newMatch.homePlayer + ' vs ' + newMatch.awayPlayer + ' - ' + 
+                newMatch.group;
+            
+            var content = '<h1>' + newMatch.homeGoals + ' - ' + newMatch.awayGoals;
             content += newMatch.overtime ? ' OT' : '';
-            content += '</h1>';
+            content += '  </h1>'; // There is extra whitespace here so it would look better on Flowdoge's Team Inbox
+
+            content += 
+                '<b>' + 
+                    newMatch.homePlayer + ' (' + newMatch.homeTeam + ') vs ' + 
+                    newMatch.awayPlayer + ' (' + newMatch.awayTeam + ')'+ 
+                '</b> ';
+            
             content += '<p>See standings from the <a href="' + config.spreadsheetLink + '">Spreadsheet</a></p>';
+            // TODO: it would be awesome if we could get the current standings here
 
             // Send them to Flowdock
             request({
