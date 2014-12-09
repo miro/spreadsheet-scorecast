@@ -263,8 +263,9 @@ function main() {
     scorecast.initializeDatabase();
 
     // Fetch the sheet
+    console.log('Fetching the Spreadsheet started');
     Spreadsheets(
-        { key: config.spreadsheetShareUrl },
+        { key: config.spreadsheetKey },
 
         function fetchReady(err, spreadsheet) {
 

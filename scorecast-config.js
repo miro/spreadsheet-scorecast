@@ -1,6 +1,6 @@
 // ### Key to the Google Spreadsheet
 // Can be found as a part of the URL found on spreadsheet's File -> Publish to web... dialog
-exports.spreadsheetShareUrl = '';
+exports.spreadsheetKey = '';
 
 // ### Flowdock Team Inbox API URL
 // Read more at https://www.flowdock.com/api/team-inbox
