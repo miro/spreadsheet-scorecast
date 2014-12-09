@@ -289,6 +289,7 @@ function main() {
             if (err) {
                 console.log('## Error occurred while fetching the spreadsheet, aborting');
                 console.log(err);
+                process.exit(1);
             }
             else {
                 // Start processing the sheet
