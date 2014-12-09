@@ -123,7 +123,7 @@ var scorecast = {
         
         // If we get here, we have DB results and scraped matches from this group
         console.log('----------');
-        console.log('Group ' + groupName + ' has all data ready, start processing');
+        console.log('Sheet for ' + groupName + ' has all data ready, start processing');
 
         // Filter new matches
         var newMatches = _.filter(self.scrapedMatches[groupName], function(match) {
@@ -142,7 +142,7 @@ var scorecast = {
 
         // Add timestamp to new matches
         _.each(newMatches, function(newMatch) {
-            newMatch["dateCreated"] = new Date();
+            newMatch['dateCreated'] = new Date();
         });
 
         // Shout new matches to Flowdock
@@ -156,25 +156,25 @@ var scorecast = {
 
                 function (err, doc) {
                 if (err) {
-                    console.log("Error - saving new matches to DB didn't work out");
+                    console.log('Error - saving new matches to DB didn\'t work out');
                 }
                 else {
-                    console.log(newMatches.length + " new matches saved to the DB.");
+                    console.log(newMatches.length + ' new matches saved to the DB.');
                     self.groupsDone += 1;
                     self.exitIfPossible();
                 }
             });
         }
         else {
-            console.log("No new matches for Group " + groupName);
+            console.log('No new matches for ' + groupName);
             self.groupsDone += 1;
             self.exitIfPossible();
         }
     },
 
     exitIfPossible: function() {
-        if (this.groupsDone >= 4 && this.newMatchesCount === this.newMatchesAnnounced) { // TODO
-            console.log('*** 4 groups processed and all new matches announced - time to exit');
+        if (this.groupsDone >= cfg.sheetCfg.size && this.newMatchesCount === this.newMatchesAnnounced) {
+            console.log('*** all sheets processed and all new matches announced - time to exit');
             process.exit(0);
         }
     },
