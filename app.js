@@ -51,15 +51,15 @@ var scorecast = {
         _.each(config.worksheets, function(sheetCfg) {
             console.log('Worksheet (' + sheetCfg.sheetIndex + ' / ' + sheetCfg.sheetGroupName + ' processing started');
 
+            var cellRange = 
+                'R' + sheetCfg.topBorder +
+                'C' + sheetCfg.leftBorder +
+                ':R' + sheetCfg.bottomBorder +
+                'C' + sheetCfg.rightBorder;
 
             // Fetch cells from this specific worksheet
             spreadsheet.worksheets[sheetCfg.sheetIndex].cells(
-                { range: 
-                    'R' + sheetCfg.leftBorder +
-                    'C' + sheetCfg.topBorder +
-                    ':R' + sheetCfg.rightBorder +
-                    'C' + sheetCfg.bottomBorder
-                }, 
+                { range: cellRange }, 
 
                 function success(error, result) {
                     if (error) {
@@ -76,23 +76,19 @@ var scorecast = {
 
 
     // This function is for processing individual worksheet
-    processCells: function(cells, sheetCfg) {
-        // Create match objects from scraped content
-        this.getValidMatches(cells, sheetCfg);
-        
-    },
+    processCells: function(rows, sheetCfg) {
 
-    getValidMatches: function(rows, sheetCfg) {
         var finishedMatches = _.filter(rows, function(row) {
-            var homePoints = _.find(row, function(cell) {
-                return cell.col === sheetCfg.homePointsCol;
-            });
-            homePoints = parseInt(homePoints.value, 10);
 
-            var awayPoints = _.find(row, function(cell) {
-                return cell.col === sheetCfg.awayPointsCol;
+            var homePointsCell = _.find(row, function(cell) {
+                return cell.col == sheetCfg.dataCols.homePoints; // use == instead of ===, columns are configured in integers but they are strings on the row object
             });
-            awayPoints = parseInt(awayPoints.value, 10);
+            var homePoints = parseInt(homePointsCell.value, 10);
+
+            var awayPointsCell = _.find(row, function(cell) {
+                return cell.col == sheetCfg.dataCols.awayPoints;
+            });
+            var awayPoints = parseInt(awayPointsCell.value, 10);
 
             return awayPoints != 0 || homePoints != 0;
         });
@@ -173,7 +169,7 @@ var scorecast = {
     },
 
     exitIfPossible: function() {
-        if (this.groupsDone >= cfg.sheetCfg.size && this.newMatchesCount === this.newMatchesAnnounced) {
+        if (this.groupsDone >= config.worksheets.length && this.newMatchesCount === this.newMatchesAnnounced) {
             console.log('*** all sheets processed and all new matches announced - time to exit');
             process.exit(0);
         }
@@ -233,22 +229,22 @@ var scorecast = {
                 group: sheetCfg.sheetGroupName,
                 type: sheetCfg.sheetGroupType,
 
-                id: row[sheetCfg.dataCols.id],
-                date: row[sheetCfg.dataCols.date],
+                id: row[sheetCfg.dataCols.id].value,
+                date: row[sheetCfg.dataCols.date].value,
                 
                 
-                homeTeam: row[sheetCfg.dataCols.homeTeam],
-                homePlayer: row[sheetCfg.dataCols.homePlayer],
-                homeGoals: row[sheetCfg.dataCols.homeGoals],
+                homeTeam: row[sheetCfg.dataCols.homeTeam].value,
+                homePlayer: row[sheetCfg.dataCols.homePlayer].value,
+                homeGoals: row[sheetCfg.dataCols.homeGoals].value,
 
-                awayGoals: row[sheetCfg.dataCols.awayGoals],
-                awayPlayer: row[sheetCfg.dataCols.awayPlayer],
-                awayTeam: row[sheetCfg.dataCols.1awayTeam],
+                awayGoals: row[sheetCfg.dataCols.awayGoals].value,
+                awayPlayer: row[sheetCfg.dataCols.awayPlayer].value,
+                awayTeam: row[sheetCfg.dataCols.awayTeam].value,
 
                 overtime: !!row[sheetCfg.dataCols.overtime] && !!row[sheetCfg.dataCols.overtime].value,
 
-                homePoints: row[sheetCfg.dataCols.homePoints],
-                awayPoints: row[sheetCfg.dataCols.awayPoints]
+                homePoints: row[sheetCfg.dataCols.homePoints].value,
+                awayPoints: row[sheetCfg.dataCols.awayPoints].value
             };
 
             this.matches.push(tempMatch);
