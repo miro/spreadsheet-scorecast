@@ -34,9 +34,6 @@ var groupStageConfig = {
         topBorder: 4,
         bottomBorder: 43,
 
-        homePointsCol: 10,
-        awayPointsCol: 11,
-
         sheetGroupType: 'group stage' 
 };
 
