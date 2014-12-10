@@ -196,15 +196,15 @@ var scorecast = {
                 '</b> ';
             
             content += '<p>See standings from the <a href="' + config.spreadsheetLink + '">Spreadsheet</a></p>';
-            // TODO: it would be awesome if we could get the current standings here
+            // TODO: it would be awesome if we could get the current standings here!
 
             // Send them to Flowdock
             request({
-                uri: config.flowdockUrl,
+                uri: 'https://api.flowdock.com/v1/messages/team_inbox/' + config.flowdockApiKey,
                 method: 'POST',
                 json: {
                     'source': config.senderTitle,
-                    'from_address': config.senderEmail, 
+                    'from_address': config.senderEmail,
                     'subject': title,
                     'content': content,
                     'tags':  [newMatch.type.split(' ').join(''), newMatch.group.split(' ').join('-'), 'game' + newMatch.id]
