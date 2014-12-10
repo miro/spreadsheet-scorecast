@@ -8,7 +8,7 @@ exports.flowdockApiKey = '';
 
 // ### Sender Info 
 // this shows on Flowdock inbox as the sender
-exports.senderEmail = 'john@doe.com';
+exports.senderEmail = 'fhl@futurice.com';
 exports.senderTitle = 'Futurice Scorecast';
 
 // ### Link to the Spreadsheet
@@ -28,14 +28,7 @@ exports.database = {
 //
 // All the indexing starts from 0, so first sheet/row/column's index is 0, NOT 1
 
-var groupStageConfig = {
-        leftBorder: 2,
-        rightBorder: 13,
-        topBorder: 4,
-        bottomBorder: 43,
 
-        sheetGroupType: 'group stage' 
-};
 
 // Object that holds the column numbers for specific data types on each match rows
 // This must be modified to match your sheet type. This information will be saved
@@ -79,13 +72,11 @@ exports.worksheets = [
     //  sheetGroupName: string to indicate a readable name for this sheet's group. For example "Group A" or "Playoffs"
     //  sheetIndex: order number of this worksheet
     //
-    //  leftBorder: the leftmost column on the content square
-    //  rightBorder: the right-most column on the content square
-    //  topBorder: the top row for the content square
-    //  bottomBorder: the bottom row for the content square
+    //  area.leftBorder: the leftmost column on the content square
+    //  area.rightBorder: the right-most column on the content square
+    //  area.topBorder: the top row for the content square
+    //  area.bottomBorder: the bottom row for the content square
     //  
-    //  homePointsCol: index of the column for home team's points on the content square. Indexing is the same as on the full spreadsheet
-    //  awayPointsCol: -||-
     // }
 
     {
