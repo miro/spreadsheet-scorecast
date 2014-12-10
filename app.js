@@ -210,7 +210,10 @@ var scorecast = {
                     'tags':  [newMatch.type.split(' ').join(''), newMatch.group.split(' ').join('-'), 'game' + newMatch.id]
                 }
             }, function(error, response, body) {
-                console.log(body); // If this is empty, alles gut
+                if (error) {
+                    console.log('### Error on Flowdock match announcing!', error);
+                }
+
                 self.newMatchesAnnounced += 1;
                 self.exitIfPossible();
             });
