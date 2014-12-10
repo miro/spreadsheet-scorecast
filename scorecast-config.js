@@ -60,6 +60,18 @@ var matchDataCols = {
     awayPoints: 13
 };
 
+
+var groupStageConfig = {
+    area: {
+        leftBorder: 2,
+        rightBorder: 13,
+        topBorder: 4,
+        bottomBorder: 43
+    },
+
+    sheetGroupType: 'group stage' 
+};
+
 exports.worksheets = [
  
     // {
@@ -81,13 +93,7 @@ exports.worksheets = [
         sheetIndex: 2,
         dataCols: matchDataCols,
 
-        leftBorder: groupStageConfig.leftBorder,
-        rightBorder: groupStageConfig.rightBorder,
-        topBorder: groupStageConfig.topBorder,
-        bottomBorder: groupStageConfig.bottomBorder,
-
-        homePointsCol: groupStageConfig.homePointsCol,
-        awayPointsCol: groupStageConfig.awayPointsCol,
+        area: groupStageConfig.area,
 
         sheetGroupType: groupStageConfig.sheetGroupType
     },
@@ -97,13 +103,7 @@ exports.worksheets = [
         sheetIndex: 3,
         dataCols: matchDataCols,
 
-        leftBorder: groupStageConfig.leftBorder,
-        rightBorder: groupStageConfig.rightBorder,
-        topBorder: groupStageConfig.topBorder,
-        bottomBorder: groupStageConfig.bottomBorder,
-
-        homePointsCol: groupStageConfig.homePointsCol,
-        awayPointsCol: groupStageConfig.awayPointsCol,
+        area: groupStageConfig.area,
 
         sheetGroupType: groupStageConfig.sheetGroupType
     },
@@ -113,13 +113,7 @@ exports.worksheets = [
         sheetIndex: 4,
         dataCols: matchDataCols,
 
-        leftBorder: groupStageConfig.leftBorder,
-        rightBorder: groupStageConfig.rightBorder,
-        topBorder: groupStageConfig.topBorder,
-        bottomBorder: groupStageConfig.bottomBorder,
-
-        homePointsCol: groupStageConfig.homePointsCol,
-        awayPointsCol: groupStageConfig.awayPointsCol,
+        area: groupStageConfig.area,
 
         sheetGroupType: groupStageConfig.sheetGroupType
     },
@@ -129,31 +123,10 @@ exports.worksheets = [
         sheetIndex: 5,
         dataCols: matchDataCols,
 
-        leftBorder: groupStageConfig.leftBorder,
-        rightBorder: groupStageConfig.rightBorder,
-        topBorder: groupStageConfig.topBorder,
-        bottomBorder: groupStageConfig.bottomBorder,
-
-        homePointsCol: groupStageConfig.homePointsCol,
-        awayPointsCol: groupStageConfig.awayPointsCol,
+        area: groupStageConfig.area,
 
         sheetGroupType: groupStageConfig.sheetGroupType
     }
 
-    // {
-        // TODO: PLAYOFFS CONFIG
-    //     sheetGroupName: 'Playoffs',
-    //     sheetIndex: 6,
-    //     dataCols: matchDataCols,
-
-    //     leftBorder: 0,
-    //     rightBorder: 11,
-    //     topBorder: 3,
-    //     bottomBorder: 33,
-
-    //     homePointsCol: 10,
-    //     awayPointsCol: 11,
-
-    //     sheetGroupType: 'playoffs'
-    // }
+    // TODO: Playoff sheet config
 ];

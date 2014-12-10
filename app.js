@@ -51,10 +51,10 @@ var scorecast = {
             console.log('Worksheet ' + sheetCfg.sheetIndex + ' / ' + sheetCfg.sheetGroupName + ' processing started');
 
             var cellRange = 
-                'R' + sheetCfg.topBorder +
-                'C' + sheetCfg.leftBorder +
-                ':R' + sheetCfg.bottomBorder +
-                'C' + sheetCfg.rightBorder;
+                'R' + sheetCfg.area.topBorder +
+                'C' + sheetCfg.area.leftBorder +
+                ':R' + sheetCfg.area.bottomBorder +
+                'C' + sheetCfg.area.rightBorder;
 
             // Fetch cells from this specific worksheet
             spreadsheet.worksheets[sheetCfg.sheetIndex].cells(
