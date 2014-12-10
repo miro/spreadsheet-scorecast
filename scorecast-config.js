@@ -40,7 +40,8 @@ var groupStageConfig = {
 // Object that holds the column numbers for specific data types on each match rows
 // This must be modified to match your sheet type. This information will be saved
 // to the database
-// TODO: playoff sheet is different than this
+// TODO: playoff sheet on FCL is different than this, do something
+// TODO: there is something funny on how the index of cols is calculated. Find out what.
 var matchDataCols = {
     id: 2,
     date: 3,

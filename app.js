@@ -4,9 +4,7 @@ var _               = require('lodash');
 var monk            = require('monk');
 var Spreadsheets    = require('google-spreadsheets'); // Google Spreadsheet crawler
 
-
-// Our own config file
-var config = require(__dirname + '/scorecast-config.js'); 
+var config = require(__dirname + '/scorecast-config.js'); // Instance specific config
 
 // Connect to database
 var db = monk(
@@ -32,6 +30,7 @@ var scorecast = {
     groupQueue: [],
 
     // Loads existing matches from the DB or inits the DB
+    // This function seems to be quite funny(unrational). Actually, what the hell?
     initializeDatabase: function initializeDatabase() {
         // Fetch DB data or init the DB
         if (!this.dbMatches) {
