@@ -22,6 +22,7 @@ console.log("Scorecast starting @ " + Date());
 
 var scorecast = {
 
+    // "State" for this script
     scrapedMatches: {},
     dbMatches: null,
     groupsDone: 0,
@@ -90,7 +91,8 @@ var scorecast = {
             });
             var awayPoints = parseInt(awayPointsCell.value, 10);
 
-            return awayPoints != 0 || homePoints != 0;
+            // If this match has both awayPoints and homePoints, it is qualified as a "finished match"
+            return awayPoints != 0 || homePoints != 0; 
         });
 
         // Add this to our scraped matches object 
@@ -118,7 +120,6 @@ var scorecast = {
         }
         
         // If we get here, we have DB results and scraped matches from this group
-        console.log('----------');
         console.log('Sheet for ' + groupName + ' has all data ready, start processing');
 
         // Filter new matches
@@ -152,7 +153,8 @@ var scorecast = {
 
                 function (err, doc) {
                 if (err) {
-                    console.log('Error - saving new matches to DB didn\'t work out');
+                    console.log('### Error - saving new matches to DB didn\'t work out');
+                    console.log('### This will cause duplicate announcements!!');
                 }
                 else {
                     console.log(newMatches.length + ' new matches saved to the DB.');
@@ -170,7 +172,7 @@ var scorecast = {
 
     exitIfPossible: function() {
         if (this.groupsDone >= config.worksheets.length && this.newMatchesCount === this.newMatchesAnnounced) {
-            console.log('*** all sheets processed and all new matches announced - time to exit');
+            console.log('# All sheets processed and all new matches announced - time to exit');
             process.exit(0);
         }
     },
@@ -274,10 +276,6 @@ var scorecast = {
 };
 
 
-
-
-// ### Start cracking up
-
 function main() {
     scorecast.initializeDatabase();
 
@@ -285,9 +283,7 @@ function main() {
     console.log('Fetching the Spreadsheet started');
     Spreadsheets(
         { key: config.spreadsheetKey },
-
-        function fetchReady(err, spreadsheet) {
-
+        function fetchDone(err, spreadsheet) {
             if (err) {
                 console.log('## Error occurred while fetching the spreadsheet, aborting');
                 console.log(err);
@@ -300,11 +296,8 @@ function main() {
             }
         }
     );
-
 };
 
+// ### Start cracking up
 main();
-
-
-
 
